@@ -6,7 +6,6 @@ import unittest
 
 class TestKaluParser(FunctionalTest):
     def test_list(self):
-        print(PATH)
         command = "./kalu_parser.py -v"
         result = self.run_script(os.path.join(PATH, command))
         result.stdout = result.stdout.decode('utf-8')
