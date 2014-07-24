@@ -21,9 +21,9 @@ class TestKaluParser(FunctionalTest):
         self.assertScriptDoes(result, stdout=HELP, trim_output=True)
 
     def test_read_some_file(self):
-        expected = ""
+        # expected = ""
         with open("./f.txt", "r") as file_to_read:
-            expected += file_to_read.read()
+            expected = file_to_read.read()
         subprocess.check_output(["cat", "f.txt"],
                                 shell=True, universal_newlines=True, input=expected)
 
