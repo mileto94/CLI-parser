@@ -1,12 +1,12 @@
 import unittest
-import kalu_parser
-from cli import app
+from kalu_parser import VERSION
+import subprocess
 
 
 class TestGetVersion(unittest.TestCase):
     def test_get_right_version(self):
-        self.assertIsNotNone(kalu_parser.print_version(app))
-
+        subprocess.check_output(["./kalu_parser.py", "-v"], input=VERSION,
+                                shell=True, universal_newlines=True)
 
 if __name__ == '__main__':
     unittest.main()
