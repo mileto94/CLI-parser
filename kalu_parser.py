@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import cli.app
 import os
-import sys
 
 
 VERSION = __file__ + " 0.0001"
