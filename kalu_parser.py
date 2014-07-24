@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 import cli.app
 import os
+import sys
 
 
-VERSION = "0.0001"
+VERSION = __file__ + " 0.0001"
 PATH = os.getcwd()
 
 
