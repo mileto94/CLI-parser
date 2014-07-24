@@ -6,8 +6,14 @@ import sys
 
 VERSION = " ".join([__file__, "version", "0.0001"])
 PATH = os.getcwd()
-HELP = """usage: print_version [-h]\n\noptional arguments:\n-h,
-        --help  show this help message and exit"""
+HELP = """usage: ./kalu_parser.py [-h] [-H] [-v] [-f [FILENAME]]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -H, --Help
+  -v, --version         show version
+  -f [FILENAME], --file [FILENAME]
+                        read/print file"""
 
 
 @cli.app.CommandLineApp(name=__file__)
