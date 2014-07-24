@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import cli.app
 import os
-import sys
 
 
 VERSION = " ".join([__file__, "version", "0.0001"])
