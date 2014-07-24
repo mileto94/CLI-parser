@@ -2,6 +2,7 @@ from cli.test import FunctionalTest
 import os
 from kalu_parser import PATH, VERSION, HELP
 import unittest
+import subprocess
 
 
 class TestKaluParser(FunctionalTest):
@@ -10,14 +11,22 @@ class TestKaluParser(FunctionalTest):
         result = self.run_script(os.path.join(PATH, command))
         result.stdout = result.stdout.decode('utf-8')
         result.stderr = result.stderr.decode('utf-8')
-        self.assertScriptDoes(result, stdout=VERSION, returncode=0, trim_output=True)
+        self.assertScriptDoes(result, stdout=VERSION, trim_output=True)
 
     def test_print_help(self):
         command = "./kalu_parser.py"
         result = self.run_script(os.path.join(PATH, command))
         result.stdout = result.stdout.decode('utf-8')
         result.stderr = result.stderr.decode('utf-8')
-        self.assertScriptDoes(result, stdout=HELP)
+        self.assertScriptDoes(result, stdout=HELP, trim_output=True)
+
+    def test_read_some_file(self):
+        expected = ""
+        with open("./f.txt", "r") as file_to_read:
+            expected += file_to_read.read()
+        subprocess.check_output(["cat", "f.txt"],
+                                shell=True, universal_newlines=True, input=expected)
+
 
 if __name__ == '__main__':
     unittest.main()
