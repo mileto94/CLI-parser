@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import cli.app
 import os
-
+import sys
 
 VERSION = " ".join([__file__, "version", "0.0001"])
 PATH = os.getcwd()
@@ -20,9 +20,13 @@ def print_version(app):
     if print_version.params.version:
         print(VERSION)
     elif print_version.params.file:
-        with open(print_version.params.file, 'r') as file_to_read:
-            for line in file_to_read.readlines():
+        if print_version.params.file == "-":
+            for line in sys.stdin.readlines():
                 print(line, end="")
+        else:
+            with open(print_version.params.file, 'r') as file_to_read:
+                for line in file_to_read.readlines():
+                    print(line, end="")
     else:
         print(HELP)
 
