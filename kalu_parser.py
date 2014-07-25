@@ -42,7 +42,7 @@ print_version.add_param("-v", "--version", help="show version",
                         default=False, action="store_true")
 print_version.add_param("-f", "--file", help="read/print file",
                         metavar="FILENAME", nargs="?")
-print_version.add_param("news", help="show news",
+print_version.add_param("news", help="show news", type=str, choices=["news"],
                         default="There are no unread news", nargs="?")
 
 
