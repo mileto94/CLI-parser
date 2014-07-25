@@ -26,6 +26,11 @@ class TestKaluParser(FunctionalTest):
         subprocess.check_output(["cat", "f.txt"], shell=True,
                                 universal_newlines=True, input=expected)
 
+    def test_move_stdout_in_file(self):
+        with open("./d.txt", "r") as file_to_read:
+            expected = file_to_read.read()
+        subprocess.check_output(["cat", "f.txt"], shell=True,
+                                universal_newlines=True, input=expected)
 
 if __name__ == '__main__':
     unittest.main()
