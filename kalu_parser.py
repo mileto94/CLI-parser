@@ -25,13 +25,25 @@ def print_version(app):
         if print_version.params.file == "-":
             for line in sys.stdin.readlines():
                 print(line, end="")
-        elif print_version.params.news:
-            with open(print_version.params.file, "r") as file_to_read:
-                count = int(file_to_read.readline()[0])
-                lines = [n for n in file_to_read.readlines() if re.search(r"^- .*", n)]
-                lines = lines[:count]
-                for line in lines:
-                    print(line, end="")
+        elif print_version.params.parse_options:
+            if print_version.params.parse_options == "news":
+                with open(print_version.params.file, "r") as file_to_read:
+                    count = int(file_to_read.readline()[0])
+                    lines = [n for n in file_to_read.readlines() if re.search(r"^- .*", n)]
+                    lines = lines[:count]
+                    for line in lines:
+                        print(line, end="")
+            elif print_version.params.parse_options == "aur":
+                with open(print_version.params.file, "r") as file_to_read:
+                    content = file_to_read.read()
+                    count = int(re.search(r"^AUR: .+", content,
+                                          re.MULTILINE).group()[5])
+                    aur = content.split("AUR: ")[1].replace("- ", "").split("\n")[1:]
+                    for line in aur:
+                        line = line[3:-4]
+                        line = line.replace("</b>", "")
+                        line = line.replace("<b>", "")
+                        print(line)
         else:
             with open(print_version.params.file, 'r') as file_to_read:
                 for line in file_to_read.readlines():
@@ -45,8 +57,8 @@ print_version.add_param("-v", "--version", help="show version",
                         default=False, action="store_true")
 print_version.add_param("-f", "--file", help="read/print file",
                         metavar="FILENAME", nargs="?")
-print_version.add_param("news", help="show news", type=str, choices=["news"],
-                        default="There are no unread news")
+print_version.add_param("parse_options", help="show parse_options", type=str,
+                        choices=["news", "aur"])
 
 
 if __name__ == "__main__":
