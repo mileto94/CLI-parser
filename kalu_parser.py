@@ -2,6 +2,8 @@
 import cli.app
 import os
 import sys
+import re
+
 
 VERSION = " ".join([__file__, "version", "0.0001"])
 PATH = os.getcwd()
@@ -25,10 +27,11 @@ def print_version(app):
                 print(line, end="")
         elif print_version.params.news:
             with open(print_version.params.file, "r") as file_to_read:
-                for line in file_to_read.readlines():
-                    if(line[0] == "-" and line[2] != "<"):
-                        line = line.replace(" [extra]", "")
-                        print(line, end="")
+                count = int(file_to_read.readline()[0])
+                lines = [n for n in file_to_read.readlines() if re.search(r"^- .*", n)]
+                lines = lines[:count]
+                for line in lines:
+                    print(line, end="")
         else:
             with open(print_version.params.file, 'r') as file_to_read:
                 for line in file_to_read.readlines():
@@ -43,7 +46,7 @@ print_version.add_param("-v", "--version", help="show version",
 print_version.add_param("-f", "--file", help="read/print file",
                         metavar="FILENAME", nargs="?")
 print_version.add_param("news", help="show news", type=str, choices=["news"],
-                        default="There are no unread news", nargs="?")
+                        default="There are no unread news")
 
 
 if __name__ == "__main__":
