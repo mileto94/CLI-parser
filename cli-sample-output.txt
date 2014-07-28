@@ -1,7 +1,9 @@
-3 unread news
-- MariaDB 10.0 enters [extra]
-- MariaDB 10.0 enters [extra]
-- MariaDB 10.0 enters [extra]
+5 unread news
+- MariaDB 10.1 enters [extra]
+- MariaDB 10.2 enters [extra]
+- MariaDB 10.3 enters [extra]
+- MariaDB 10.4 enters [extra]
+- MariaDB 10.5 enters [extra]
 61 updates available (D: 174.84 MiB; N: -9.72 MiB)
 - <b>poppler</b> 0.26.2-1 > <b>0.26.3-1</b> (D: 973.04 KiB; N: 0 B)
 - <b>poppler-glib</b> 0.26.2-1 > <b>0.26.3-1</b> (D: 202.96 KiB; N: 0 B)
