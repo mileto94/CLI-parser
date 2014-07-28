@@ -66,5 +66,7 @@
 - <b>xterm</b> 308-1 > <b>309-1</b> (D: 272.11 KiB; N: 0 B)
 - <b>zfs-utils-git</b> 0.6.3_r0_g07dabd2_3.15.4_1-1 > <b>0.6.3_r0_g07dabd2_3.15.5_2-2</b> (D: 970.54 KiB; N: 0 B)
 - <b>zfs-git</b> 0.6.3_r0_g07dabd2_3.15.4_1-1 > <b>0.6.3_r0_g07dabd2_3.15.5_2-2</b> (D: 686.09 KiB; N: 0 B)
-AUR: 1 packages updated
+AUR: 3 packages updated
 - <b>xpra-winswitch</b> 0.13.6-1 > <b>0.13.7-1</b>
+- <b>xpra-winswitch</b> 0.13.6-2 > <b>0.13.7-2</b>
+- <b>xpra-winswitch</b> 0.13.6-3 > <b>0.13.7-3</b>
