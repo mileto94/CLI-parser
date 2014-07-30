@@ -1,7 +1,7 @@
 import unittest
 from kalu_parser import VERSION, HELP
 import subprocess
-from expected_results_from_unittests import expected_news, expected_aur, expected_updates
+from expected_results_from_unittests import expected_news, expected_aur, expected_updates, expected_brief
 
 
 class TestGetVersion(unittest.TestCase):
@@ -36,6 +36,12 @@ class TestGetAURInfoFromFile(unittest.TestCase):
 class TestGetUpdatesInfoFromFile(unittest.TestCase):
     def test_get_update_info(self):
         subprocess.check_output(["./kalu_parser.py", "updates -f"], input=expected_updates,
+                                shell=True, universal_newlines=True)
+
+
+class TestGetBriefPackageView(unittest.TestCase):
+    def test_get_brief_view(self):
+        subprocess.check_output(["./kalu_parser.py", "-b"], input=expected_brief,
                                 shell=True, universal_newlines=True)
 
 
