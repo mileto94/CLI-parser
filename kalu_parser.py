@@ -13,7 +13,7 @@ def print_version(app):
         print(VERSION)
 
 
-print_version.add_param("-v", "--version", help="show version",
+print_version.add_param("-V", "--version", help="show version",
                         default=False, action="store_true")
 
 
