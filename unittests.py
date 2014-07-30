@@ -1,7 +1,7 @@
 import unittest
 from kalu_parser import VERSION, HELP
 import subprocess
-from expected_results_from_unittests import expected_news
+from expected_results_from_unittests import expected_news, expected_aur
 
 
 class TestGetVersion(unittest.TestCase):
@@ -29,10 +29,7 @@ class TestGetNewsFromFile(unittest.TestCase):
 
 class TestGetAURInfoFromFile(unittest.TestCase):
     def test_get_aur_info(self):
-        expected = """xpra-winswitch 0.13.6-1 > 0.13.7-1
-xpra-winswitch 0.13.6-2 > 0.13.7-2
-xpra-winswitch 0.13.6-3 > 0.13.7-3"""
-        subprocess.check_output(["./kalu_parser.py", "aur -f"], input=expected,
+        subprocess.check_output(["./kalu_parser.py", "aur -f"], input=expected_aur,
                                 shell=True, universal_newlines=True)
 
 
