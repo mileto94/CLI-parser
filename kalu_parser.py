@@ -44,6 +44,19 @@ def print_version(app):
                         line = line.replace("</b>", "")
                         line = line.replace("<b>", "")
                         print(line)
+            elif print_version.params.parse_options == "updates":
+                with open(print_version.params.file, "r") as file_to_read:
+                    content = re.search(r"^\d+ updates available.+",
+                                        file_to_read.read(),
+                                        re.DOTALL | re.MULTILINE).group()
+                    content = content.split("AUR")[0].split("\n")[1:-1]
+                    for line in content:
+                        line = re.search(r"<b>(\w.+)</b>", line).group()
+                        line = re.findall(r"<b>(?P<package>[^<]*)</b>\ (?P<old>[^ >]*)\ >\ <b>(?P<new>[^<]*)</b>",
+                                         line)
+                        updates = " ".join([line[0][0], line[0][1], "->",
+                                            line[0][2]])
+                        print(updates)
         else:
             with open(print_version.params.file, 'r') as file_to_read:
                 for line in file_to_read.readlines():
@@ -58,7 +71,7 @@ print_version.add_param("-v", "--version", help="show version",
 print_version.add_param("-f", "--file", help="read/print file",
                         metavar="FILENAME", nargs="?")
 print_version.add_param("parse_options", help="show parse_options", type=str,
-                        choices=["news", "aur"])
+                        choices=["news", "aur", "updates"])
 
 
 if __name__ == "__main__":
