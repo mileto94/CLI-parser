@@ -56,7 +56,7 @@ print_version.add_param("-v", "--version", help="show version",
 print_version.add_param("-f", "--file", help="read/print file",
                         metavar="FILENAME", nargs="?")
 print_version.add_param("parse_options", help="show parse_options", type=str,
-                        choices=["news", "aur"])
+                        choices=["news", "aur"], nargs="?")
 
 
 if __name__ == "__main__":
