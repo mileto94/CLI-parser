@@ -31,5 +31,14 @@ class TestGetNewsFromFile(unittest.TestCase):
                                 shell=True, universal_newlines=True)
 
 
+class TestGetAURInfoFromFile(unittest.TestCase):
+    def test_get_aur_info(self):
+        expected = """xpra-winswitch 0.13.6-1 > 0.13.7-1
+xpra-winswitch 0.13.6-2 > 0.13.7-2
+xpra-winswitch 0.13.6-3 > 0.13.7-3"""
+        subprocess.check_output(["./kalu_parser.py", "aur -f"], input=expected,
+                                shell=True, universal_newlines=True)
+
+
 if __name__ == '__main__':
     unittest.main()
