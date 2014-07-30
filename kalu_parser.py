@@ -51,7 +51,7 @@ def print_version(app):
 
 
 print_version.add_param("-H", "--Help", default=True, action="store_true")
-print_version.add_param("-v", "--version", help="show version",
+print_version.add_param("-V", "--version", help="show version",
                         default=False, action="store_true")
 print_version.add_param("-f", "--file", help="read/print file",
                         metavar="FILENAME", nargs="?")
