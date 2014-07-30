@@ -25,11 +25,9 @@ def print_version(app):
         if print_version.params.file == "-":
             for line in sys.stdin.readlines():
                 print(line, end="")
-        elif print_version.params.news:
+        elif print_version.params.news == "news":
             with open(print_version.params.file, "r") as file_to_read:
-                count = int(file_to_read.readline()[0])
-                lines = [n for n in file_to_read.readlines() if re.search(r"^- .*", n)]
-                lines = lines[:count]
+                lines = [n for n in file_to_read.readlines() if re.search(r"^-\ \w+.*$", n)]
                 for line in lines:
                     print(line, end="")
         else:
@@ -45,8 +43,8 @@ print_version.add_param("-v", "--version", help="show version",
                         default=False, action="store_true")
 print_version.add_param("-f", "--file", help="read/print file",
                         metavar="FILENAME", nargs="?")
-print_version.add_param("news", help="show news", type=str, choices=["news"],
-                        default="There are no unread news")
+print_version.add_param("news", help="show news", type=str,
+                        default="There are no unread news", nargs="?")
 
 
 if __name__ == "__main__":
