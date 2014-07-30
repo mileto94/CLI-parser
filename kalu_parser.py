@@ -60,6 +60,13 @@ def print_version(app):
             with open(print_version.params.file, 'r') as file_to_read:
                 for line in file_to_read.readlines():
                     print(line, end="")
+    elif print_version.params.brief:
+        # print_version.param.brief === filename
+        with open(print_version.params.brief, "r") as file_to_read:
+            for line in file_to_read.readlines():
+                line = re.findall(r"^- <b>([^<]+)</b>", line)
+                if len(line):
+                    print(line[0])
     else:
         print(HELP)
 
@@ -71,6 +78,8 @@ print_version.add_param("-f", "--file", help="read/print file",
                         metavar="FILENAME", nargs="?")
 print_version.add_param("parse_options", help="show parse_options", type=str,
                         choices=["news", "aur", "updates"], nargs="?")
+print_version.add_param("-b", "--brief", help="show packages without versions",
+                        metavar="FILENAME", nargs="?")
 
 
 if __name__ == "__main__":
