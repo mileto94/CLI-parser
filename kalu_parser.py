@@ -54,6 +54,7 @@ def print_version(app):
                         line = re.search(r"<b>(\w.+)</b>", line).group()
                         line = re.findall(r"<b>(?P<package>[^<]*)</b>\ (?P<old>[^ >]*)\ >\ <b>(?P<new>[^<]*)</b>",
                                          line)
+                        # line is list of tuple[()]:
                         updates = " ".join([line[0][0], line[0][1], "->",
                                             line[0][2]])
                         print(updates)
