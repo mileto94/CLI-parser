@@ -8,6 +8,8 @@ class TestGetVersion(unittest.TestCase):
         subprocess.check_output(["./kalu_parser.py", "-v"], input=VERSION,
                                 shell=True, universal_newlines=True)
 
+
+class TestHelpMessages(unittest.TestCase):
     def test_get_help_message(self):
         subprocess.check_output(["./kalu_parser.py", "-h"], input=HELP,
                                 shell=True, universal_newlines=True)
