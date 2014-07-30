@@ -28,11 +28,9 @@ def print_version(app):
         elif print_version.params.parse_options:
             if print_version.params.parse_options == "news":
                 with open(print_version.params.file, "r") as file_to_read:
-                    count = int(file_to_read.readline()[0])
-                    lines = [n for n in file_to_read.readlines() if re.search(r"^- .*", n)]
-                    lines = lines[:count]
-                    for line in lines:
-                        print(line, end="")
+                    lines = [n for n in file_to_read.readlines() if re.search(r"^-\ \w+.*$", n)]
+                for line in lines:
+                    print(line, end="")
             elif print_version.params.parse_options == "aur":
                 with open(print_version.params.file, "r") as file_to_read:
                     content = file_to_read.read()
