@@ -19,5 +19,17 @@ class TestHelpMessages(unittest.TestCase):
                                 shell=True, universal_newlines=True)
 
 
+class TestGetNewsFromFile(unittest.TestCase):
+    def test_get_news_from_file(self):
+        expected = """
+- MariaDB 10.1 enters [extra]
+- MariaDB 10.2 enters [extra]
+- MariaDB 10.3 enters [extra]
+- MariaDB 10.4 enters [extra]
+- MariaDB 10.5 enters [extra]"""
+        subprocess.check_output(["./kalu_parser.py", "news -f"], input=expected,
+                                shell=True, universal_newlines=True)
+
+
 if __name__ == '__main__':
     unittest.main()
