@@ -28,11 +28,9 @@ def print_version(app):
         elif print_version.params.parse_options:
             if print_version.params.parse_options == "news":
                 with open(print_version.params.file, "r") as file_to_read:
-                    count = int(file_to_read.readline()[0])
-                    lines = [n for n in file_to_read.readlines() if re.search(r"^- .*", n)]
-                    lines = lines[:count]
-                    for line in lines:
-                        print(line, end="")
+                    lines = [n for n in file_to_read.readlines() if re.search(r"^-\ \w+.*$", n)]
+                for line in lines:
+                    print(line, end="")
             elif print_version.params.parse_options == "aur":
                 with open(print_version.params.file, "r") as file_to_read:
                     content = file_to_read.read()
@@ -72,7 +70,7 @@ print_version.add_param("-v", "--version", help="show version",
 print_version.add_param("-f", "--file", help="read/print file",
                         metavar="FILENAME", nargs="?")
 print_version.add_param("parse_options", help="show parse_options", type=str,
-                        choices=["news", "aur", "updates"])
+                        choices=["news", "aur", "updates"], nargs="?")
 
 
 if __name__ == "__main__":
