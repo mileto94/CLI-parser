@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 import cli.app
+from os.path import basename
 import os
 import sys
 import re
 
 
-VERSION = " ".join([__file__, "version", "0.0001"])
+VERSION = " ".join([basename(__file__), "version", "0.0001"])
 PATH = os.getcwd()
 HELP = """usage: ./kalu_parser.py [-h] [-H] [-v] [-f [FILENAME]]
 
@@ -14,7 +15,8 @@ optional arguments:
   -H, --Help
   -v, --version         show version
   -f [FILENAME], --file [FILENAME]
-                        read/print file"""
+                        read/print file
+"""
 
 
 @cli.app.CommandLineApp(name=__file__)
@@ -68,7 +70,7 @@ def print_version(app):
                 if len(line):
                     print(line[0])
     else:
-        print(HELP)
+        print(HELP, end="")
 
 
 print_version.add_param("-H", "--Help", default=True, action="store_true")
