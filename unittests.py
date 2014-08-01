@@ -1,7 +1,12 @@
 import unittest
 from kalu_parser import VERSION, HELP
 import subprocess
-from expected_results_from_unittests import expected_news, expected_aur, expected_updates, expected_updates_brief, expected_aur_brief
+from expected_results_from_unittests import (expected_verbosed_updates,
+                                             expected_aur,
+                                             expected_news,
+                                             expected_updates,
+                                             expected_updates_brief,
+                                             expected_aur_brief)
 
 
 class TestGetVersion(unittest.TestCase):
@@ -59,6 +64,14 @@ class TestGetBriefPackageView(unittest.TestCase):
                                          input=expected_aur_brief, shell=True,
                                          universal_newlines=True)
         self.assertEqual(output, expected_aur_brief)
+
+
+class TestGetVerbosedUpdates(unittest.TestCase):
+    def test_get_verbosed_updates(self):
+        output = subprocess.check_output("./kalu_parser.py updates -v -f cli-sample-output.txt",
+                                         input=expected_verbosed_updates, shell=True,
+                                         universal_newlines=True)
+        self.assertEqual(output, expected_verbosed_updates)
 
 
 if __name__ == '__main__':

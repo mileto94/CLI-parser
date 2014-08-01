@@ -19,8 +19,19 @@ optional arguments:
 """
 
 
+def check_verbosity():
+    return print_version.params.verbose
+
+
 def check_brief():
     return print_version.params.brief
+
+
+def make_verbosity(line):
+    line = re.findall(r"\(D:\s(?P<download>.*)N:\s(?P<net_install>.+)\)",
+                      line)
+    line = [line[0][0], line[0][1]]
+    return line
 
 
 @cli.app.CommandLineApp(name=__file__)
@@ -40,15 +51,19 @@ def print_version(app):
             elif print_version.params.parse_options == "aur":
                 with open(print_version.params.file, "r") as file_to_read:
                     content = file_to_read.read()
-                    count = int(re.search(r"^AUR: .+", content,
-                                          re.MULTILINE).group()[5])
                     aur = content.split("AUR: ")[1].replace("- ", "").split("\n")[1:]
                     for line in aur:
-                        line = line[3:-4]
-                        line = line.replace("</b>", "")
-                        line = line.replace("<b>", "")
+                        newline = re.findall(r"<b>(?P<package>[^<]*)</b>\ (?P<old>[^ >]*)\ >\ <b>(?P<new>[^<]*)</b>",
+                                          line)
+                        aur = [newline[0][0], newline[0][1], ">", newline[0][2]]
                         if check_brief():
-                            line = line.split(" ")[0]
+                            line = aur[0]
+                        elif check_verbosity():
+                            verbosed = make_verbosity(line)
+                            v_line = ["Download", verbosed[0], "Net Install", verbosed[1]]
+                            line = " ".join(aur + v_line)
+                        else:
+                            line = " ".join(aur)
                         print(line)
             elif print_version.params.parse_options == "updates":
                 with open(print_version.params.file, "r") as file_to_read:
@@ -57,16 +72,22 @@ def print_version(app):
                                         re.DOTALL | re.MULTILINE).group()
                     content = content.split("AUR")[0].split("\n")[1:-1]
                     for line in content:
-                        line = re.search(r"<b>(\w.+)</b>", line).group()
-                        line = re.findall(r"<b>(?P<package>[^<]*)</b>\ (?P<old>[^ >]*)\ >\ <b>(?P<new>[^<]*)</b>",
-                                         line)
+                        newline = re.search(r"<b>(\w.+)</b>", line).group()
+                        newline = re.findall(r"<b>(?P<package>[^<]*)</b>\ (?P<old>[^ >]*)\ >\ <b>(?P<new>[^<]*)</b>",
+                                             newline)
                         # line is list of tuple[()]:
                         if check_brief():
-                            updates = line[0][0]
+                            updates = newline[0][0]
                         else:
-                            updates = " ".join([line[0][0], line[0][1], "->",
-                                                line[0][2]])
+                            updates = [newline[0][0], newline[0][1], "->",
+                                                newline[0][2]]
+                            if check_verbosity():
+                                verbosed = make_verbosity(line)
+                                updates += ["Download ", verbosed[0], "Net Install ",
+                                            verbosed[1]]
+                            updates = " ".join(updates)
                         print(updates)
+
         else:
             with open(print_version.params.file, 'r') as file_to_read:
                 for line in file_to_read.readlines():
