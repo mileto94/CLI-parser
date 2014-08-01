@@ -1,13 +1,14 @@
-expected_news = """
-- MariaDB 10.1 enters [extra]
+expected_news = """- MariaDB 10.1 enters [extra]
 - MariaDB 10.2 enters [extra]
 - MariaDB 10.3 enters [extra]
 - MariaDB 10.4 enters [extra]
-- MariaDB 10.5 enters [extra]"""
+- MariaDB 10.5 enters [extra]
+"""
 
 expected_aur = """xpra-winswitch 0.13.6-1 > 0.13.7-1
 xpra-winswitch 0.13.6-2 > 0.13.7-2
-xpra-winswitch 0.13.6-3 > 0.13.7-3"""
+xpra-winswitch 0.13.6-3 > 0.13.7-3
+"""
 
 expected_updates = """poppler 0.26.2-1 -> 0.26.3-1
 poppler-glib 0.26.2-1 -> 0.26.3-1
@@ -69,9 +70,10 @@ systemd-sysvcompat 214-2 -> 215-4
 which 2.20-6 -> 2.20-7
 xterm 308-1 -> 309-1
 zfs-utils-git 0.6.3_r0_g07dabd2_3.15.4_1-1 -> 0.6.3_r0_g07dabd2_3.15.5_2-2
-zfs-git 0.6.3_r0_g07dabd2_3.15.4_1-1 -> 0.6.3_r0_g07dabd2_3.15.5_2-2"""
+zfs-git 0.6.3_r0_g07dabd2_3.15.4_1-1 -> 0.6.3_r0_g07dabd2_3.15.5_2-2
+"""
 
-expected_brief = """poppler
+expected_updates_brief = """poppler
 poppler-glib
 apvlv
 xdg-utils
@@ -132,6 +134,9 @@ which
 xterm
 zfs-utils-git
 zfs-git
+"""
+
+expected_aur_brief = """xpra-winswitch
 xpra-winswitch
 xpra-winswitch
-xpra-winswitch"""
+"""

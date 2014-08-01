@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 import cli.app
+from os.path import basename
 import os
 import sys
 import re
 
 
-VERSION = " ".join([__file__, "version", "0.0001"])
+VERSION = " ".join([basename(__file__), "version", "0.0001"])
 PATH = os.getcwd()
 HELP = """usage: ./kalu_parser.py [-h] [-H] [-v] [-f [FILENAME]]
 
@@ -14,7 +15,12 @@ optional arguments:
   -H, --Help
   -v, --version         show version
   -f [FILENAME], --file [FILENAME]
-                        read/print file"""
+                        read/print file
+"""
+
+
+def check_brief():
+    return print_version.params.brief
 
 
 @cli.app.CommandLineApp(name=__file__)
@@ -41,6 +47,8 @@ def print_version(app):
                         line = line[3:-4]
                         line = line.replace("</b>", "")
                         line = line.replace("<b>", "")
+                        if check_brief():
+                            line = line.split(" ")[0]
                         print(line)
             elif print_version.params.parse_options == "updates":
                 with open(print_version.params.file, "r") as file_to_read:
@@ -53,22 +61,18 @@ def print_version(app):
                         line = re.findall(r"<b>(?P<package>[^<]*)</b>\ (?P<old>[^ >]*)\ >\ <b>(?P<new>[^<]*)</b>",
                                          line)
                         # line is list of tuple[()]:
-                        updates = " ".join([line[0][0], line[0][1], "->",
-                                            line[0][2]])
+                        if check_brief():
+                            updates = line[0][0]
+                        else:
+                            updates = " ".join([line[0][0], line[0][1], "->",
+                                                line[0][2]])
                         print(updates)
         else:
             with open(print_version.params.file, 'r') as file_to_read:
                 for line in file_to_read.readlines():
                     print(line, end="")
-    elif print_version.params.brief:
-        # print_version.param.brief === filename
-        with open(print_version.params.brief, "r") as file_to_read:
-            for line in file_to_read.readlines():
-                line = re.findall(r"^- <b>([^<]+)</b>", line)
-                if len(line):
-                    print(line[0])
     else:
-        print(HELP)
+        print(HELP, end="")
 
 
 print_version.add_param("-H", "--Help", default=True, action="store_true")
@@ -79,7 +83,9 @@ print_version.add_param("-f", "--file", help="read/print file",
 print_version.add_param("parse_options", help="show parse_options", type=str,
                         choices=["news", "aur", "updates"], nargs="?")
 print_version.add_param("-b", "--brief", help="show packages without versions",
-                        metavar="FILENAME", nargs="?")
+                        default=0, action="count")
+print_version.add_param("-v", "--verbose", help="Show verbose downloading data",
+                        default=0, action="count")
 
 
 if __name__ == "__main__":
