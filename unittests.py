@@ -41,24 +41,13 @@ class TestGetAURInfoFromFile(unittest.TestCase):
 
 class TestGetUpdatesInfoFromFile(unittest.TestCase):
     def test_get_update_info(self):
-<<<<<<< HEAD
-        output = subprocess.check_output("./kalu_parser.py updates -f cli-sample-output.txt", input=expected_updates,
-                                shell=True, universal_newlines=True)
-=======
         output = subprocess.check_output("./kalu_parser.py updates -f cli-sample-output.txt",
                                          input=expected_updates, shell=True,
                                          universal_newlines=True)
->>>>>>> brief
         self.assertEqual(output, expected_updates)
 
 
 class TestGetBriefPackageView(unittest.TestCase):
-<<<<<<< HEAD
-    def test_get_brief_view(self):
-        output = subprocess.check_output("./kalu_parser.py -b cli-sample-output.txt", input=expected_brief,
-                                         shell=True, universal_newlines=True)
-        self.assertEqual(output, expected_brief)
-=======
     def test_get_updates_brief(self):
         output = subprocess.check_output("./kalu_parser.py updates -b -f cli-sample-output.txt",
                                          input=expected_updates_brief, shell=True,
@@ -70,7 +59,6 @@ class TestGetBriefPackageView(unittest.TestCase):
                                          input=expected_aur_brief, shell=True,
                                          universal_newlines=True)
         self.assertEqual(output, expected_aur_brief)
->>>>>>> brief
 
 
 if __name__ == '__main__':
