@@ -66,10 +66,12 @@ def print_version(app):
                             line = " ".join(aur)
                         print(line)
             elif print_version.params.parse_options == "updates":
+                total = []
                 with open(print_version.params.file, "r") as file_to_read:
                     content = re.search(r"^\d+ updates available.+",
                                         file_to_read.read(),
                                         re.DOTALL | re.MULTILINE).group()
+                    all_update_info = re.search(r"^\d+ updates.+", content).group()
                     content = content.split("AUR")[0].split("\n")[1:-1]
                     for line in content:
                         newline = re.search(r"<b>(\w.+)</b>", line).group()
@@ -86,8 +88,17 @@ def print_version(app):
                                 updates += ["Download ", verbosed[0], "Net Install ",
                                             verbosed[1]]
                             updates = " ".join(updates)
+                            if check_verbosity() == 2:
+                                number = re.search(r"\d+", all_update_info).group()
+                                info = make_verbosity(all_update_info)
+                                d_size = info[0]
+                                i_size = info[1]
+                                total = ["Total Updates Available:", number, "\n",
+                                         "Download Size:", d_size[:-2], "\n",
+                                         "Net Install Size:", i_size]
                         print(updates)
-
+                if check_verbosity() == 2:
+                    print(" ".join(total))
         else:
             with open(print_version.params.file, 'r') as file_to_read:
                 for line in file_to_read.readlines():
@@ -106,6 +117,9 @@ print_version.add_param("parse_options", help="show parse_options", type=str,
 print_version.add_param("-b", "--brief", help="show packages without versions",
                         default=0, action="count")
 print_version.add_param("-v", "--verbose", help="Show verbose downloading data",
+                        default=0, action="count")
+print_version.add_param("--vv", "--verbose --verbose", "--verbose=2",
+                        help="Show full verbose - with info about all processes done",
                         default=0, action="count")
 
 

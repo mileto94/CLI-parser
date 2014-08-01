@@ -203,3 +203,13 @@ xterm 308-1 -> 309-1 Download  272.11 KiB;  Net Install  0 B
 zfs-utils-git 0.6.3_r0_g07dabd2_3.15.4_1-1 -> 0.6.3_r0_g07dabd2_3.15.5_2-2 Download  970.54 KiB;  Net Install  0 B
 zfs-git 0.6.3_r0_g07dabd2_3.15.4_1-1 -> 0.6.3_r0_g07dabd2_3.15.5_2-2 Download  686.09 KiB;  Net Install  0 B
 """
+
+expected_verbosed_aur = """xpra-winswitch 0.13.6-1 > 0.13.7-1 Download 459.12 KiB;  Net Install 1 B
+xpra-winswitch 0.13.6-2 > 0.13.7-2 Download 459.12 KiB;  Net Install 2 B
+xpra-winswitch 0.13.6-3 > 0.13.7-3 Download 459.12 KiB;  Net Install 3 B
+"""
+
+expected_vverbosed_updates = expected_verbosed_updates + """Total Updates Available: 61 
+ Download Size: 174.84 MiB 
+ Net Install Size: -9.72 MiB
+ """

@@ -6,7 +6,9 @@ from expected_results_from_unittests import (expected_verbosed_updates,
                                              expected_news,
                                              expected_updates,
                                              expected_updates_brief,
-                                             expected_aur_brief)
+                                             expected_aur_brief,
+                                             expected_verbosed_aur,
+                                             expected_vverbosed_updates)
 
 
 class TestGetVersion(unittest.TestCase):
@@ -66,12 +68,26 @@ class TestGetBriefPackageView(unittest.TestCase):
         self.assertEqual(output, expected_aur_brief)
 
 
-class TestGetVerbosedUpdates(unittest.TestCase):
+class TestGetVerbosed(unittest.TestCase):
     def test_get_verbosed_updates(self):
         output = subprocess.check_output("./kalu_parser.py updates -v -f cli-sample-output.txt",
                                          input=expected_verbosed_updates, shell=True,
                                          universal_newlines=True)
         self.assertEqual(output, expected_verbosed_updates)
+
+    def test_get_verbosed_aur(self):
+        output = subprocess.check_output("./kalu_parser.py aur -v -f cli-sample-output.txt",
+                                         input=expected_verbosed_updates, shell=True,
+                                         universal_newlines=True)
+        self.assertEqual(output, expected_verbosed_aur)
+
+
+class TestGetDoubleVerbosed(unittest.TestCase):
+    def test_get_verbosed_updates(self):
+        output = subprocess.check_output("./kalu_parser.py updates -vv -f cli-sample-output.txt",
+                                         input=expected_vverbosed_updates, shell=True,
+                                         universal_newlines=True)
+        self.assertEqual(output, expected_vverbosed_updates)
 
 
 if __name__ == '__main__':
