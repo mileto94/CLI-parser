@@ -8,7 +8,9 @@ from expected_results_from_unittests import (expected_verbosed_updates,
                                              expected_updates_brief,
                                              expected_aur_brief,
                                              expected_verbosed_aur,
-                                             expected_vverbosed_updates)
+                                             expected_vverbosed_updates,
+                                             expected_vverbosed_news,
+                                             expected_vverbosed_aur)
 
 
 class TestGetVersion(unittest.TestCase):
@@ -83,11 +85,23 @@ class TestGetVerbosed(unittest.TestCase):
 
 
 class TestGetDoubleVerbosed(unittest.TestCase):
-    def test_get_verbosed_updates(self):
+    def test_get_double_verbosed_updates(self):
         output = subprocess.check_output("./kalu_parser.py updates -vv -f cli-sample-output.txt",
                                          input=expected_vverbosed_updates, shell=True,
                                          universal_newlines=True)
         self.assertEqual(output, expected_vverbosed_updates)
+
+    def test_get_double_verbosed_news(self):
+        output = subprocess.check_output("./kalu_parser.py news -vv -f cli-sample-output.txt",
+                                         input=expected_vverbosed_news, shell=True,
+                                         universal_newlines=True)
+        self.assertEqual(output, expected_vverbosed_news)
+
+    def test_get_double_verbosed_aur(self):
+        output = subprocess.check_output("./kalu_parser.py aur -vv -f cli-sample-output.txt",
+                                         input=expected_vverbosed_aur, shell=True,
+                                         universal_newlines=True)
+        self.assertEqual(output, expected_vverbosed_aur)
 
 
 if __name__ == '__main__':

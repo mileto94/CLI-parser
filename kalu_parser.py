@@ -45,13 +45,20 @@ def print_version(app):
         elif print_version.params.parse_options:
             if print_version.params.parse_options == "news":
                 with open(print_version.params.file, "r") as file_to_read:
-                    lines = [n for n in file_to_read.readlines() if re.search(r"^-\ \w+.*$", n)]
+                    content = file_to_read.read()
+                    lines = re.findall(r"^-\ \w+.*$", content, re.MULTILINE)
                 for line in lines:
-                    print(line, end="")
+                    print(line)
+                if check_verbosity() == 2:
+                    news_size = re.search(r"^\d+", content).group()
+                    total = ["Total Unread News:", news_size]
+                    print(" ".join(total))
             elif print_version.params.parse_options == "aur":
                 with open(print_version.params.file, "r") as file_to_read:
                     content = file_to_read.read()
-                    aur = content.split("AUR: ")[1].replace("- ", "").split("\n")[1:]
+                    aur = content.split("AUR: ")[1].replace("- ", "")
+                    aur_number = aur.split(" ")[0]
+                    aur = aur.split("\n")[1:]
                     for line in aur:
                         newline = re.findall(r"<b>(?P<package>[^<]*)</b>\ (?P<old>[^ >]*)\ >\ <b>(?P<new>[^<]*)</b>",
                                           line)
@@ -62,9 +69,13 @@ def print_version(app):
                             verbosed = make_verbosity(line)
                             v_line = ["Download", verbosed[0], "Net Install", verbosed[1]]
                             line = " ".join(aur + v_line)
+                            if check_verbosity() == 2:
+                                total = ["Total Packages Updated:", aur_number]
                         else:
                             line = " ".join(aur)
                         print(line)
+                if check_verbosity() == 2:
+                    print(" ".join(total))
             elif print_version.params.parse_options == "updates":
                 total = []
                 with open(print_version.params.file, "r") as file_to_read:
@@ -91,10 +102,10 @@ def print_version(app):
                             if check_verbosity() == 2:
                                 number = re.search(r"\d+", all_update_info).group()
                                 info = make_verbosity(all_update_info)
-                                d_size = info[0]
+                                d_size = info[0][:-2]
                                 i_size = info[1]
                                 total = ["Total Updates Available:", number, "\n",
-                                         "Download Size:", d_size[:-2], "\n",
+                                         "Download Size:", d_size, "\n",
                                          "Net Install Size:", i_size]
                         print(updates)
                 if check_verbosity() == 2:

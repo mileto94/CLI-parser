@@ -212,4 +212,9 @@ xpra-winswitch 0.13.6-3 > 0.13.7-3 Download 459.12 KiB;  Net Install 3 B
 expected_vverbosed_updates = expected_verbosed_updates + """Total Updates Available: 61 
  Download Size: 174.84 MiB 
  Net Install Size: -9.72 MiB
- """
+"""
+expected_vverbosed_news = expected_news + """Total Unread News: 5
+"""
+
+expected_vverbosed_aur = expected_verbosed_aur + """Total Packages Updated: 3
+"""
