@@ -1,3 +1,5 @@
+from kalu_parser import HELP
+
 expected_news = """- MariaDB 10.1 enters [extra]
 - MariaDB 10.2 enters [extra]
 - MariaDB 10.3 enters [extra]
@@ -218,3 +220,6 @@ expected_vverbosed_news = expected_news + """Total Unread News: 5
 
 expected_vverbosed_aur = expected_verbosed_aur + """Total Packages Updated: 3
 """
+
+expected_exc_help = """There is no file with this name!
+""" + HELP

@@ -10,7 +10,8 @@ from expected_results_from_unittests import (expected_verbosed_updates,
                                              expected_verbosed_aur,
                                              expected_vverbosed_updates,
                                              expected_vverbosed_news,
-                                             expected_vverbosed_aur)
+                                             expected_vverbosed_aur,
+                                             expected_exc_help)
 
 
 class TestGetVersion(unittest.TestCase):
@@ -30,6 +31,11 @@ class TestHelpMessages(unittest.TestCase):
         output = subprocess.check_output("./kalu_parser.py", input=HELP,
                                          shell=True, universal_newlines=True)
         self.assertEqual(output, HELP)
+
+    def test_get_default_help_message_with_exception(self):
+        output = subprocess.check_output("./kalu_parser.py news -v -f g.fjf",
+                                         shell=True, universal_newlines=True)
+        self.assertEqual(output, expected_exc_help)
 
 
 class TestGetNewsFromFile(unittest.TestCase):

@@ -21,10 +21,11 @@ optional arguments:
 
 def exists(filename):
     try:
-        file = open(filename, "r")
+        file = open(filename, "rb")
         file.close()
         return True
     except IOError:
+        print("There is no file with this name!")
         return False
 
 
