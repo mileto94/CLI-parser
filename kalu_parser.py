@@ -20,11 +20,11 @@ optional arguments:
 
 
 def check_verbosity():
-    return print_version.params.verbose
+    return kalu_parser.params.verbose
 
 
 def check_brief():
-    return print_version.params.brief
+    return kalu_parser.params.brief
 
 
 def make_verbosity(line):
@@ -34,105 +34,118 @@ def make_verbosity(line):
     return line
 
 
+def print_news():
+    with open(kalu_parser.params.file, "r") as file_to_read:
+        content = file_to_read.read()
+        lines = re.findall(r"^-\ \w+.*$", content, re.MULTILINE)
+    for line in lines:
+        print(line)
+    if check_verbosity() == 2:
+        news_size = re.search(r"^\d+", content).group()
+        total = ["Total Unread News:", news_size]
+        print(" ".join(total))
+
+
+def print_aur():
+    aur = ""
+    with open(kalu_parser.params.file, "r") as file_to_read:
+        content = file_to_read.read()
+        aur = content.split("AUR: ")[1].replace("- ", "")
+        aur_number = aur.split(" ")[0]
+        aur = aur.split("\n")[1:]
+    for line in aur:
+        newline = re.findall(r"<b>(?P<package>[^<]*)</b>\ (?P<old>[^ >]*)\ >\ <b>(?P<new>[^<]*)</b>",
+                             line)
+        aur = [newline[0][0], newline[0][1], ">", newline[0][2]]
+        if check_brief():
+            line = aur[0]
+        elif check_verbosity():
+            verbosed = make_verbosity(line)
+            v_line = ["Download", verbosed[0], "Net Install", verbosed[1]]
+            line = " ".join(aur + v_line)
+            if check_verbosity() == 2:
+                total = ["Total Packages Updated:", aur_number]
+        else:
+            line = " ".join(aur)
+        print(line)
+    if check_verbosity() == 2:
+        print(" ".join(total))
+
+
+def print_updates():
+    total = []
+    all_update_info = ""
+    content = []
+    with open(kalu_parser.params.file, "r") as file_to_read:
+        content = re.search(r"^\d+ updates available.+", file_to_read.read(),
+                            re.DOTALL | re.MULTILINE).group()
+        all_update_info = re.search(r"^\d+ updates.+", content).group()
+        content = content.split("AUR")[0].split("\n")[1:-1]
+    for line in content:
+        newline = re.search(r"<b>(\w.+)</b>", line).group()
+        newline = re.findall(r"<b>(?P<package>[^<]*)</b>\ (?P<old>[^ >]*)\ >\ <b>(?P<new>[^<]*)</b>",
+                             newline)
+        # line is list of tuple[()]:
+        if check_brief():
+            updates = newline[0][0]
+        else:
+            updates = [newline[0][0], newline[0][1], "->", newline[0][2]]
+            if check_verbosity():
+                verbosed = make_verbosity(line)
+                updates += ["Download ", verbosed[0], "Net Install ",
+                            verbosed[1]]
+            updates = " ".join(updates)
+            if check_verbosity() == 2:
+                number = re.search(r"\d+", all_update_info).group()
+                info = make_verbosity(all_update_info)
+                d_size = info[0][:-2]
+                i_size = info[1]
+                total = ["Total Updates Available:", number, "\n",
+                         "Download Size:", d_size, "\n",
+                         "Net Install Size:", i_size]
+        print(updates)
+    if check_verbosity() == 2:
+        print(" ".join(total))
+
+
 @cli.app.CommandLineApp(name=__file__)
-def print_version(app):
-    if print_version.params.version:
+def kalu_parser(app):
+    if kalu_parser.params.version:
         print(VERSION)
-    elif print_version.params.file:
-        if print_version.params.file == "-":
+    elif kalu_parser.params.file:
+        if kalu_parser.params.file == "-":
             for line in sys.stdin.readlines():
                 print(line, end="")
-        elif print_version.params.parse_options:
-            if print_version.params.parse_options == "news":
-                with open(print_version.params.file, "r") as file_to_read:
-                    content = file_to_read.read()
-                    lines = re.findall(r"^-\ \w+.*$", content, re.MULTILINE)
-                for line in lines:
-                    print(line)
-                if check_verbosity() == 2:
-                    news_size = re.search(r"^\d+", content).group()
-                    total = ["Total Unread News:", news_size]
-                    print(" ".join(total))
-            elif print_version.params.parse_options == "aur":
-                with open(print_version.params.file, "r") as file_to_read:
-                    content = file_to_read.read()
-                    aur = content.split("AUR: ")[1].replace("- ", "")
-                    aur_number = aur.split(" ")[0]
-                    aur = aur.split("\n")[1:]
-                    for line in aur:
-                        newline = re.findall(r"<b>(?P<package>[^<]*)</b>\ (?P<old>[^ >]*)\ >\ <b>(?P<new>[^<]*)</b>",
-                                          line)
-                        aur = [newline[0][0], newline[0][1], ">", newline[0][2]]
-                        if check_brief():
-                            line = aur[0]
-                        elif check_verbosity():
-                            verbosed = make_verbosity(line)
-                            v_line = ["Download", verbosed[0], "Net Install", verbosed[1]]
-                            line = " ".join(aur + v_line)
-                            if check_verbosity() == 2:
-                                total = ["Total Packages Updated:", aur_number]
-                        else:
-                            line = " ".join(aur)
-                        print(line)
-                if check_verbosity() == 2:
-                    print(" ".join(total))
-            elif print_version.params.parse_options == "updates":
-                total = []
-                with open(print_version.params.file, "r") as file_to_read:
-                    content = re.search(r"^\d+ updates available.+",
-                                        file_to_read.read(),
-                                        re.DOTALL | re.MULTILINE).group()
-                    all_update_info = re.search(r"^\d+ updates.+", content).group()
-                    content = content.split("AUR")[0].split("\n")[1:-1]
-                    for line in content:
-                        newline = re.search(r"<b>(\w.+)</b>", line).group()
-                        newline = re.findall(r"<b>(?P<package>[^<]*)</b>\ (?P<old>[^ >]*)\ >\ <b>(?P<new>[^<]*)</b>",
-                                             newline)
-                        # line is list of tuple[()]:
-                        if check_brief():
-                            updates = newline[0][0]
-                        else:
-                            updates = [newline[0][0], newline[0][1], "->",
-                                                newline[0][2]]
-                            if check_verbosity():
-                                verbosed = make_verbosity(line)
-                                updates += ["Download ", verbosed[0], "Net Install ",
-                                            verbosed[1]]
-                            updates = " ".join(updates)
-                            if check_verbosity() == 2:
-                                number = re.search(r"\d+", all_update_info).group()
-                                info = make_verbosity(all_update_info)
-                                d_size = info[0][:-2]
-                                i_size = info[1]
-                                total = ["Total Updates Available:", number, "\n",
-                                         "Download Size:", d_size, "\n",
-                                         "Net Install Size:", i_size]
-                        print(updates)
-                if check_verbosity() == 2:
-                    print(" ".join(total))
+        elif kalu_parser.params.parse_options:
+            if kalu_parser.params.parse_options == "news":
+                print_news()
+            elif kalu_parser.params.parse_options == "aur":
+                print_aur()
+            elif kalu_parser.params.parse_options == "updates":
+                print_updates()
         else:
-            with open(print_version.params.file, 'r') as file_to_read:
+            with open(kalu_parser.params.file, 'r') as file_to_read:
                 for line in file_to_read.readlines():
                     print(line, end="")
     else:
         print(HELP, end="")
 
 
-print_version.add_param("-H", "--Help", default=True, action="store_true")
-print_version.add_param("-V", "--version", help="show version",
-                        default=False, action="store_true")
-print_version.add_param("-f", "--file", help="read/print file",
-                        metavar="FILENAME", nargs="?")
-print_version.add_param("parse_options", help="show parse_options", type=str,
-                        choices=["news", "aur", "updates"], nargs="?")
-print_version.add_param("-b", "--brief", help="show packages without versions",
-                        default=0, action="count")
-print_version.add_param("-v", "--verbose", help="Show verbose downloading data",
-                        default=0, action="count")
-print_version.add_param("--vv", "--verbose --verbose", "--verbose=2",
-                        help="Show full verbose - with info about all processes done",
-                        default=0, action="count")
+kalu_parser.add_param("-H", "--Help", default=True, action="store_true")
+kalu_parser.add_param("-V", "--version", help="show version",
+                      default=False, action="store_true")
+kalu_parser.add_param("-f", "--file", help="read/print file",
+                      metavar="FILENAME", nargs="?")
+kalu_parser.add_param("parse_options", help="show parse_options", type=str,
+                      choices=["news", "aur", "updates"], nargs="?")
+kalu_parser.add_param("-b", "--brief", help="show packages without versions",
+                      default=0, action="count")
+kalu_parser.add_param("-v", "--verbose", help="Show verbose downloading data",
+                      default=0, action="count")
+kalu_parser.add_param("--vv", "--verbose --verbose", "--verbose=2",
+                      help="Show full verbose - with info about all processes done",
+                      default=0, action="count")
 
 
 if __name__ == "__main__":
-    print_version.run()
+    kalu_parser.run()
