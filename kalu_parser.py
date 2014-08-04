@@ -19,6 +19,15 @@ optional arguments:
 """
 
 
+def exists(filename):
+    try:
+        file = open(filename, "r")
+        file.close()
+        return True
+    except IOError:
+        return False
+
+
 def check_verbosity():
     return kalu_parser.params.verbose
 
@@ -112,7 +121,7 @@ def print_updates():
 def kalu_parser(app):
     if kalu_parser.params.version:
         print(VERSION)
-    elif kalu_parser.params.file:
+    elif kalu_parser.params.file and exists(kalu_parser.params.file):
         if kalu_parser.params.file == "-":
             for line in sys.stdin.readlines():
                 print(line, end="")
@@ -123,7 +132,7 @@ def kalu_parser(app):
                 print_aur()
             elif kalu_parser.params.parse_options == "updates":
                 print_updates()
-        else:
+        elif exists(kalu_parser.params.file):
             with open(kalu_parser.params.file, 'r') as file_to_read:
                 for line in file_to_read.readlines():
                     print(line, end="")
